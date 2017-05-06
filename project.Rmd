@@ -1,0 +1,57 @@
+---
+output:
+  pdf_document: default
+  html_document: default
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Developing Data Products Course Project - R Markdown and Leaflet
+
+## Instructions
+
+Create a web page using R Markdown that features a map created with Leaflet.
+
+Host your webpage on either GitHub Pages, RPubs, or NeoCities.
+
+Your webpage must contain the date that you created the document, and it must contain a map created with Leaflet. We would love to see you show off your creativity!
+
+## Review criteria
+
+The rubric contains the following two questions:
+
+1. Does the web page feature a date and is this date less than two months before the date that you're grading this assignment?
+2. Does the web page feature an interactive map that appears to have been created with Leaflet?
+
+---
+
+New York City has many boroughs (5, to be precise).  Here are 3, with circles centered on the latitude/longitude of each, and radii proportional to the borough population:
+
+  1. Manhattan
+  2. Brooklyn
+  3. Queen
+
+along with an icon over the Empire State Building:
+
+```{r}
+library(leaflet)
+cities <-data.frame(name = c("Manhattan", "Brooklyn", "Queens"),
+                         pop = c(1636000, 2622000, 2322000),
+                         lat = c(40.7128, 40.6782, 40.7282),
+                         lng = c(-74.0059, -73.9442, -73.7949))
+```
+
+```{r}
+icon <-makeIcon(
+    iconUrl = 'https://d30y9cdsu7xlg0.cloudfront.net/png/36684-200.png',
+    iconWidth=20, iconHeight = 20)
+```
+
+```{r}
+cities %>%
+  leaflet() %>%
+  addTiles() %>%
+  addMarkers(-73.9857, 40.7484, icon=icon, popup = "Home On Derange") %>%
+  addCircles(weight=1, radius=sqrt(cities$pop) * 1, color=c('green', 'blue', 'red'))
+```
